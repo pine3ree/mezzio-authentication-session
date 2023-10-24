@@ -8,8 +8,8 @@ use Mezzio\Authentication\AuthenticationInterface;
 use Mezzio\Authentication\Session\Response\CallableResponseFactoryDecorator;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Authentication\UserRepositoryInterface;
+use Mezzio\Session\RetrieveSession;
 use Mezzio\Session\SessionInterface;
-use Mezzio\Session\SessionMiddleware;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -63,7 +63,7 @@ class PhpSession implements AuthenticationInterface
      */
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
-        $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+        $session = RetrieveSession::fromRequestOrNull($request);
         if (! $session instanceof SessionInterface) {
             throw Exception\MissingSessionContainerException::create();
         }

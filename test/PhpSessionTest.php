@@ -71,9 +71,9 @@ class PhpSessionTest extends TestCase
 
     public function testAuthenticationWithMissingSessionAttributeRaisesException(): void
     {
-        $this->request->expects(self::atLeastOnce())
+        $this->request->expects(self::atLeast(2))
                       ->method('getAttribute')
-                      ->with('session')
+                      ->with($this->logicalOr('session', SessionInterface::class))
                       ->willReturn(null);
 
         $phpSession = new PhpSession(
